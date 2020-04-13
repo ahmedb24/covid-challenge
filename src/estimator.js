@@ -1,8 +1,3 @@
-const estimateCurrentlyInfected = (data) => {
-  return data.reportedCases * 10;
-}
-
-
 const estimateCurrentlyInfectedImpact = (data) => {
   var currentlyInfectedImpact;    
   if(data.reportedCases === '' || data.reportedCases==0) {
