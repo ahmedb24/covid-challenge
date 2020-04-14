@@ -49,10 +49,10 @@ const estimator = (currentlyInfected, data) => {
   } = data;
   const days = periodInDays(periodType, timeToElapse);
   const factor = Math.trunc(days / 3);
-  const currentlyInfectedByRequestedTime = currentlyInfected * (2 ** factor);
+  const infectionsByRequestedTime = currentlyInfected * (2 ** factor);
   return {
     currentlyInfected,
-    currentlyInfectedByRequestedTime
+    infectionsByRequestedTime
   };
 };
 
