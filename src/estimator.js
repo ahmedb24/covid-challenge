@@ -43,7 +43,11 @@ const periodInDays = (periodType, timeToElapse) => {
 };
 
 const estimator = (currentlyInfected, data) => {
-  const days = periodInDays(data.periodType, data.timeToElapse);
+  const {
+    periodType,
+    timeToElapse
+  } = data;
+  const days = periodInDays(periodType, timeToElapse);
   const factor = Math.trunc(days / 3);
   const currentlyInfectedByRequestedTime = currentlyInfected * (2 ** factor);
   return {
@@ -53,18 +57,20 @@ const estimator = (currentlyInfected, data) => {
 };
 
 const impactCases = (data) => {
-  if (data.reportedCases === '' || data.reportedCases === 0) {
+  const { reportedCases } = data;
+  if (reportedCases === '' || reportedCases === 0) {
     return 0;
   }
-  const currentlyInfected = data.reportedCases * 10;
+  const currentlyInfected = reportedCases * 10;
   return estimator(currentlyInfected, data);
 };
 
 const severeCases = (data) => {
-  if (data.reportedCases === '' || data.reportedCases === 0) {
+  const { reportedCases } = data;
+  if (reportedCases === '' || reportedCases === 0) {
     return 0;
   }
-  const currentlyInfected = data.reportedCases * 50;
+  const currentlyInfected = reportedCases * 50;
   return estimator(currentlyInfected, data);
 };
 
