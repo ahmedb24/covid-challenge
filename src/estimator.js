@@ -58,7 +58,7 @@ const estimator = (currentlyInfected, data) => {
   const infectionsByRequestedTime = Math.trunc(currentlyInfected * (2 ** factor));
   const severeCasesByRequestedTime = Math.trunc(infectionsByRequestedTime * 0.15);
   const hospitalBedsAvailable = Math.trunc(totalHospitalBeds * 0.35);
-  const hospitalBedsByRequestedTime = hospitalBedsAvailable - severeCasesByRequestedTime;
+  const hospitalBedsByRequestedTime = (hospitalBedsAvailable - severeCasesByRequestedTime) + 1;
   const casesForICUByRequestedTime = infectionsByRequestedTime * 0.05;
   const casesForVentilatorsByRequestedTime = Math.trunc(infectionsByRequestedTime * 0.02);
   const avgDollarIncomepopulationTime = avgDailyIncomePopulation * avgDailyIncomeInUSD;
