@@ -45,14 +45,19 @@ const periodInDays = (periodType, timeToElapse) => {
 const estimator = (currentlyInfected, data) => {
   const {
     periodType,
-    timeToElapse
+    timeToElapse,
+    totalHospitalBeds
   } = data;
   const days = periodInDays(periodType, timeToElapse);
   const factor = Math.trunc(days / 3);
   const infectionsByRequestedTime = currentlyInfected * (2 ** factor);
+  const severeCasesByRequestedTime = Math.trunc(infectionsByRequestedTime * 0.15);
+  const hospitalBedsByRequestedTime = Math.trunc(totalHospitalBeds * 0.35);
   return {
     currentlyInfected,
-    infectionsByRequestedTime
+    infectionsByRequestedTime,
+    severeCasesByRequestedTime,
+    hospitalBedsByRequestedTime
   };
 };
 
