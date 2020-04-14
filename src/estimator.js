@@ -28,16 +28,19 @@ const estimateCurrentlyInfectedByRequestedTimeSevereImpact = (data) => {
   return infectionInThirtyDays;
 };
 
-const covid19ImpactEstimator = (data) => ({
-  data,
-  impact: {
-    currentlyInfected: estimateCurrentlyInfectedImpact(data),
-    currentlyInfectedByRequestedTime: estimateCurrentlyInfectedByRequestedTimeImpact(data)
-  },
-  severeImpact: {
-    currentlyInfected: estimateCurrentlyInfectedSevereImpact(data),
-    currentlyInfectedByRequestedTime: estimateCurrentlyInfectedByRequestedTimeSevereImpact(data)
-  }
-});
+const covid19ImpactEstimator = (data) => {
+  const info = data;
+  return {
+    data: info,
+    impact: {
+      currentlyInfected: estimateCurrentlyInfectedImpact(data),
+      currentlyInfectedByRequestedTime: estimateCurrentlyInfectedByRequestedTimeImpact(data)
+    },
+    severeImpact: {
+      currentlyInfected: estimateCurrentlyInfectedSevereImpact(data),
+      currentlyInfectedByRequestedTime: estimateCurrentlyInfectedByRequestedTimeSevereImpact(data)
+    }
+  };
+};
 
 export default covid19ImpactEstimator;
