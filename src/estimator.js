@@ -44,23 +44,36 @@ const periodInDays = (periodType, timeToElapse) => {
 
 const estimator = (currentlyInfected, data) => {
   const {
+    region,
     periodType,
     timeToElapse,
     totalHospitalBeds
   } = data;
+  const {
+    avgDailyIncomeInUSD,
+    avgDailyIncomePopulation
+  } = region;
   const days = periodInDays(periodType, timeToElapse);
   const factor = Math.trunc(days / 3);
-  const infectionsByRequestedTime = currentlyInfected * (2 ** factor);
+  const infectionsByRequestedTime = Math.trunc(currentlyInfected * (2 ** factor));
   const severeCasesByRequestedTime = Math.trunc(infectionsByRequestedTime * 0.15);
-  const hospitalBedsByRequestedTime = Math.trunc(totalHospitalBeds * 0.35);
+  const hospitalBedsAvailable = Math.trunc(totalHospitalBeds * 0.35);
+  const hospitalBedsByRequestedTime = hospitalBedsAvailable - severeCasesByRequestedTime;
+  const casesForICUByRequestedTime = infectionsByRequestedTime * 0.05;
+  const casesForVentilatorsByRequestedTime = Math.trunc(infectionsByRequestedTime * 0.02);
+  const avgDollarIncomepopulationTime = avgDailyIncomePopulation * avgDailyIncomeInUSD;
+  const amountInDollar = (infectionsByRequestedTime * avgDollarIncomepopulationTime) / days;
+  const dollarsInFlight = Math.floor(amountInDollar);
   return {
     currentlyInfected,
     infectionsByRequestedTime,
     severeCasesByRequestedTime,
-    hospitalBedsByRequestedTime
+    hospitalBedsByRequestedTime,
+    casesForICUByRequestedTime,
+    casesForVentilatorsByRequestedTime,
+    dollarsInFlight
   };
 };
-
 const impactCases = (data) => {
   const { reportedCases } = data;
   if (reportedCases === '' || reportedCases === 0) {
