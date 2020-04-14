@@ -1,4 +1,4 @@
-const estimateCurrentlyInfectedImpact = (data) => {
+/* const estimateCurrentlyInfectedImpact = (data) => {
   if (data.reportedCases === '' || data.reportedCases === 0) {
     return 0;
   }
@@ -26,20 +26,54 @@ const estimateCurrentlyInfectedByRequestedTimeSevereImpact = (data) => {
   const factor = days / 3;
   const infectionInThirtyDays = estimateCurrentlyInfectedSevereImpact(data) * 2 ** factor;
   return infectionInThirtyDays;
+}; */
+
+const periodInDays = (periodType, timeToElapse) => {
+  let period;
+  if (periodType === 'months') {
+    period = timeToElapse * 30;
+  } else if (periodType === 'months') {
+    period = timeToElapse * 7;
+  } else if (periodType === 'months') {
+    period = timeToElapse;
+  } else {
+    return 0;
+  }
+  return period;
+};
+
+const estimator = (currentlyInfected, data) => {
+  const days = periodInDays(data.periodType, data.timeToElapse);
+  const factor = Math.trunc(days / 3);
+  const currentlyInfectedByRequestedTime = currentlyInfected * (2 ** factor);
+  return {
+    currentlyInfected,
+    currentlyInfectedByRequestedTime
+  };
+};
+
+const impactCases = (data) => {
+  if (data.reportedCases === '' || data.reportedCases === 0) {
+    return 0;
+  }
+  const currentlyInfected = data.reportedCases * 10;
+  return estimator(currentlyInfected);
+};
+
+const severeCases = (data) => {
+  if (data.reportedCases === '' || data.reportedCases === 0) {
+    return 0;
+  }
+  const currentlyInfected = data.reportedCases * 50;
+  return estimator(currentlyInfected);
 };
 
 const covid19ImpactEstimator = (data) => {
   const info = data;
   return {
     data: info,
-    impact: {
-      currentlyInfected: estimateCurrentlyInfectedImpact(data),
-      currentlyInfectedByRequestedTime: estimateCurrentlyInfectedByRequestedTimeImpact(data)
-    },
-    severeImpact: {
-      currentlyInfected: estimateCurrentlyInfectedSevereImpact(data),
-      currentlyInfectedByRequestedTime: estimateCurrentlyInfectedByRequestedTimeSevereImpact(data)
-    }
+    impact: impactCases(data),
+    severeImpact: severeCases(data)
   };
 };
 
