@@ -32,9 +32,9 @@ const periodInDays = (periodType, timeToElapse) => {
   let period;
   if (periodType === 'months') {
     period = timeToElapse * 30;
-  } else if (periodType === 'months') {
+  } else if (periodType === 'weeks') {
     period = timeToElapse * 7;
-  } else if (periodType === 'months') {
+  } else if (periodType === 'days') {
     period = timeToElapse;
   } else {
     return 0;
@@ -57,7 +57,7 @@ const impactCases = (data) => {
     return 0;
   }
   const currentlyInfected = data.reportedCases * 10;
-  return estimator(currentlyInfected);
+  return estimator(currentlyInfected, data);
 };
 
 const severeCases = (data) => {
@@ -65,7 +65,7 @@ const severeCases = (data) => {
     return 0;
   }
   const currentlyInfected = data.reportedCases * 50;
-  return estimator(currentlyInfected);
+  return estimator(currentlyInfected, data);
 };
 
 const covid19ImpactEstimator = (data) => {
